@@ -3,7 +3,7 @@
 #define analogPin A3
 #define dirPin 2
 #define stepPin 3
-#define stepsPerRevolution 100
+#define stepsPerRevolution 20
 
 // LCD pin to Arduino
 const int pin_RS = 8; 
@@ -14,7 +14,7 @@ const int pin_d6 = 6;
 const int pin_d7 = 7;
 
 const int pasosDefault = 600;
-int incremento = 200;
+int incremento = 50;
 
 //Parametros presiones
 int pSis = 120;
@@ -158,19 +158,20 @@ void Raul(int pSis, int pDias, float pam){
           digitalWrite(stepPin, LOW);
           delayMicroseconds(1500 - incremento);
         }
-        incremento += 50;
+        incremento += 5;
         contador++;
       }
 
       /* ========== De presion PAM a DIAS ========== */
       while(adcRead <= pam && adcRead > pDias){
+        incremento -= 5;
         digitalWrite(dirPin, HIGH);
         for (int i = 0; i <  2*stepsPerRevolution + incremento; i++) {
           digitalWrite(stepPin, HIGH);
           delayMicroseconds(1000 - incremento);
           digitalWrite(stepPin, LOW);
           delayMicroseconds(1000 - incremento);
-        } 
+        }
         
         digitalWrite(dirPin, LOW);
         for (int i = 0; i <  2*stepsPerRevolution + incremento; i++) {
@@ -179,7 +180,6 @@ void Raul(int pSis, int pDias, float pam){
           digitalWrite(stepPin, LOW);
           delayMicroseconds(1000 - incremento);
         }
-        incremento -= 50;
       }
     }
   }
