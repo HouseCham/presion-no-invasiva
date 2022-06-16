@@ -14,7 +14,6 @@ const int pin_d6 = 6;
 const int pin_d7 = 7;
 
 const int pasosDefault = 600;
-int incremento = 50;
 
 //Parametros presiones
 int pSis = 120;
@@ -141,46 +140,73 @@ void Raul(int pSis, int pDias, float pam){
     if (bandera >= 2){
       
       /* ========== De presion SIS a PAM ========== */
-      while(adcRead <= pSis && adcRead > pam){
+      while(adcRead <= pSis && adcRead > pDias){
+        //adc = analogRead(analogPin);
+        //voltaje = adc * (5.0/1023.0);
+        //adcRead = (396.21 * (voltaje)) - 84.892;
         
         digitalWrite(dirPin, HIGH);
         for (int i = 0; i <  2*stepsPerRevolution + incremento; i++) {
           digitalWrite(stepPin, HIGH);
-          delayMicroseconds(1500 - incremento);
+          delayMicroseconds(1500 - incremento - 20);
           digitalWrite(stepPin, LOW);
-          delayMicroseconds(1500 - incremento);
+          delayMicroseconds(1500 - incremento - 20);
         } 
         
         digitalWrite(dirPin, LOW);
         for (int i = 0; i <  2*stepsPerRevolution + incremento; i++) {
           digitalWrite(stepPin, HIGH);
-          delayMicroseconds(1500 - incremento);
+          delayMicroseconds(1500 - incremento - 20);
           digitalWrite(stepPin, LOW);
-          delayMicroseconds(1500 - incremento);
+          delayMicroseconds(1500 - incremento - 20);
         }
         incremento += 5;
         contador++;
       }
+      
+      /*
+      digitalWrite(dirPin, LOW);
+      for (int i = 0; i <  6000; i++) {
+        digitalWrite(stepPin, HIGH);
+        delayMicroseconds(1000);
+        digitalWrite(stepPin, LOW);
+        delayMicroseconds(1000);
+      }
+      */
 
       /* ========== De presion PAM a DIAS ========== */
+      /*
       while(adcRead <= pam && adcRead > pDias){
+        
         incremento -= 5;
         digitalWrite(dirPin, HIGH);
+        
         for (int i = 0; i <  2*stepsPerRevolution + incremento; i++) {
           digitalWrite(stepPin, HIGH);
-          delayMicroseconds(1000 - incremento);
+          delayMicroseconds(1500 - incremento - 20);
           digitalWrite(stepPin, LOW);
-          delayMicroseconds(1000 - incremento);
+          delayMicroseconds(1500 - incremento - 20);
         }
         
         digitalWrite(dirPin, LOW);
         for (int i = 0; i <  2*stepsPerRevolution + incremento; i++) {
           digitalWrite(stepPin, HIGH);
-          delayMicroseconds(1000 - incremento);
+          delayMicroseconds(1500 - incremento - 20);
           digitalWrite(stepPin, LOW);
-          delayMicroseconds(1000 - incremento);
+          delayMicroseconds(1500 - incremento - 20);
         }
+        
+        if(adcRead < pDias + 10){
+          digitalWrite(dirPin, LOW);
+          for (int i = 0; i <  6000; i++) {
+            digitalWrite(stepPin, HIGH);
+            delayMicroseconds(1000);
+            digitalWrite(stepPin, LOW);
+            delayMicroseconds(1000);
+          }
+        } 
       }
+      */
     }
   }
 }
